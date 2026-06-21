@@ -54,6 +54,25 @@ public void search_withNoFilters_shouldReturnFeaturedAndNonFeaturedProducts()
         // assert
         assertEquals(2, actual.size(), "Both black products in the price range should be returned.");
     }
+    @Test
+    public void update_shouldPersistStockChange()
+    {
+        // arrange
+        ProductRepository productRepository = mock(ProductRepository.class);
+        ProductService productService = new ProductService(productRepository);
 
+        Product existing = new Product(1, "Smartphone", 499.99, 1, "Old description", "Black", 50, false, "smartphone.jpg");
+        Product changes = new Product(1, "Smartphone", 499.99, 1, "Updated description", "Black", 25, false, "smartphone.jpg");
+
+        when(productRepository.findById(1)).thenReturn(Optional.of(existing));
+        when(productRepository.save(any(Product.class))).thenAnswer(invocation -> invocation.getArgument(0));
+
+        // act
+        Product updated = productService.update(1, changes);
+
+        // assert
+        assertEquals(25, updated.getStock(), "Stock must be copied from the request body and saved.");
+        assertEquals("Updated description", updated.getDescription(), "Other fields should still update normally.");
+    }
 
 }
