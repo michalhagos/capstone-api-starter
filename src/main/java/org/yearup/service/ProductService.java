@@ -54,6 +54,8 @@ public class ProductService
         existing.setCategoryId(product.getCategoryId());
         existing.setDescription(product.getDescription());
         existing.setSubCategory(product.getSubCategory());
+        // New code: copy stock before saving, so PUT /products/{id} persists every editable field.
+        existing.setStock(product.getStock());
         existing.setFeatured(product.isFeatured());
         existing.setImageUrl(product.getImageUrl());
         return productRepository.save(existing);
