@@ -25,7 +25,8 @@ public class CategoryService
     public Category getById(int categoryId)
     {
         // get category by id
-        return null;
+        // Return null when the id does not exist so the controller can return 404 Not Found.
+        return categoryRepository.findById(categoryId).orElse(null);
     }
 
     public Category create(Category category)
