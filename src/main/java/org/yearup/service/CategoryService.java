@@ -36,14 +36,20 @@ public class CategoryService
         return categoryRepository.save(category);
     }
 
-    public Category update(int categoryId, Category category)
-    {
+    public Category update(int categoryId, Category category) {
         // update category and return the updated category
-        return null;
+        Category existing = categoryRepository.findById(categoryId).orElse(null);
+        if (existing == null) {
+            return null;
+        }
+        // Update the editable category fields only. The URL id remains the source of truth.
+        existing.setName(category.getName());
+        existing.setDescription(category.getDescription());
+
+        return categoryRepository.save(existing);
     }
 
-    public void delete(int categoryId)
-    {
+    public void delete(int categoryId) {
         // delete category
     }
 }
