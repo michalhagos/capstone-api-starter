@@ -42,4 +42,22 @@ public class ShoppingCartService
         }
         return shoppingCart;
     }
+    @Transactional
+    public ShoppingCart addProduct(int userId, int productId) {
+        CartItem cartItem = shoppingCartRepository.findByUserIdAndProductId(userId, productId);
+        if (cartItem == null)
+        {
+            // this means new product in this user's cart: insert with quantity 1.
+            cartItem = new CartItem();
+            cartItem.setUserId(userId);
+            cartItem.setProductId(productId);
+            cartItem.setQuantity(1);
+        }
+        else {
+            // Existing product in this user's cart: increase quantity by 1.
+            cartItem.setQuantity(cartItem.getQuantity() + 1);
+        }
+        shoppingCartRepository.save(cartItem);
+        return getByUserId(userId);
+    }
 }
