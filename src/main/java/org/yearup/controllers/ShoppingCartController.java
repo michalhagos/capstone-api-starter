@@ -44,7 +44,16 @@ public class ShoppingCartController
     // add a POST method to add a product to the cart - the url should be
     // https://localhost:8080/cart/products/15  (15 is the productId to be added)
     // return the updated cart with status 201 Created
-
+    @PostMapping("products/{productId}")
+    public ResponseEntity<ShoppingCart> addProduct(@PathVariable int productId, Principal principal) {
+        if (productService.getById(productId) == null)
+        {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Product not found.");
+        }
+        int userId = getCurrentUserId(principal);
+        ShoppingCart cart = shoppingCartService.addProduct(userId, productId);
+        return ResponseEntity.status(HttpStatus.CREATED).body(cart);
+    }
 
     // add a PUT method to update an existing product in the cart - the url should be
     // https://localhost:8080/cart/products/15  (15 is the productId to be updated)

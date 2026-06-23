@@ -1,5 +1,6 @@
 package org.yearup.service;
 
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 import org.yearup.models.CartItem;
 import org.yearup.models.Product;
@@ -41,6 +42,4 @@ public class ShoppingCartService
         }
         return shoppingCart;
     }
-
-    // add additional methods here
 }
