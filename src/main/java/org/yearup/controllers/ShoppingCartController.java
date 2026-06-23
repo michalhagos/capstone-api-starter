@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.yearup.models.ShoppingCart;
 import org.yearup.models.User;
+import org.yearup.service.ProductService;
 import org.yearup.service.ShoppingCartService;
 import org.yearup.service.UserService;
 
@@ -22,6 +23,15 @@ public class ShoppingCartController
     // a shopping cart controller depends on the service layer
     private ShoppingCartService shoppingCartService;
     private UserService userService;
+    private ProductService productService;
+    // adding a constructor
+    public ShoppingCartController(ShoppingCartService shoppingCartService,
+                                  UserService userService,
+                                  ProductService productService) {
+        this.shoppingCartService = shoppingCartService;
+        this.userService = userService;
+        this.productService = productService;
+    }
 
 
 
