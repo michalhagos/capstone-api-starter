@@ -1,9 +1,12 @@
 package org.yearup.controllers;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 import org.yearup.models.ShoppingCart;
 import org.yearup.models.User;
 import org.yearup.service.ProductService;
@@ -33,19 +36,11 @@ public class ShoppingCartController
         this.productService = productService;
     }
 
-
-
     // each method in this controller requires a Principal object as a parameter
-    public ShoppingCart getCart(Principal principal)
-    {
-        // get the currently logged-in username
-        String userName = principal.getName();
-        // find database user by username
-        User user = userService.getByUserName(userName);
-        int userId = user.getId();
-
-        // use the shoppingCartService to get all items in the cart and return the cart
-        return null;
+    @GetMapping("")
+    public ShoppingCart getCart(Principal principal) {
+        int userId = getCurrentUserId(principal);
+       return shoppingCartService.getByUserId(userId);
     }
 
     // add a POST method to add a product to the cart - the url should be
@@ -61,4 +56,15 @@ public class ShoppingCartController
     // add a DELETE method to clear all products from the current users cart
     // https://localhost:8080/cart  - return the (now empty) cart so the front end can refresh it (200 OK)
 
+    private int getCurrentUserId(Principal principal) {
+        if (principal == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Login required.");
+        }
+        String userName = principal.getName();
+        User user = userService.getByUserName(userName);
+        if (user == null) {
+            throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Login required.");
+        }
+        return user.getId();
+    }
 }
