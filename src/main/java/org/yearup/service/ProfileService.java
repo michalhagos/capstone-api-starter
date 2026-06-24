@@ -13,22 +13,22 @@ public class ProfileService
     {
         this.profileRepository = profileRepository;
     }
-
+    // Creates a new profile record called automatically when a user registers
     public Profile create(Profile profile)
     {
         return profileRepository.save(profile);
     }
-
-    public Profile getByUserId(int userId)
-    {
+    // Returns the profile for a given user, or null if one doesn't exist yet
+    public Profile getByUserId(int userId) {
         return profileRepository.findById(userId).orElse(null);
     }
-    public Profile update(int userId, Profile profile)
-    {
+    // Updates all editable fields on an existing profile and saves it.
+    // Returns null if no profile exists for that userId so the controller
+    // can return a 404 instead of throwing an unexpected error.
+    public Profile update(int userId, Profile profile) {
         Profile existing = profileRepository.findById(userId).orElse(null);
 
-        if (existing == null)
-        {
+        if (existing == null) {
             return null;
         }
         // The user id comes from the logged-in user, not from the request body.

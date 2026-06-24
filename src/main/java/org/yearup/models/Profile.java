@@ -1,15 +1,18 @@
 package org.yearup.models;
 
 import jakarta.persistence.*;
-
+// Represents a user's personal and shipping information.
+// A profile record is automatically created when a user registers.
 @Entity
 @Table(name = "profiles")
 public class Profile
 {
+    // userId is also the primary key
     @Id
     @Column(name = "user_id")
     private int userId;
-
+    // Personal info all default to empty string so the profile
+    // can be created at registration before the user fills anything in
     @Column(name = "first_name")
     private String firstName = "";
 
@@ -21,7 +24,7 @@ public class Profile
 
     @Column(name = "email")
     private String email = "";
-
+    // Shipping address also used at checkout time to pre-fill the order
     @Column(name = "address")
     private String address = "";
 
@@ -33,11 +36,10 @@ public class Profile
 
     @Column(name = "zip")
     private String zip = "";
-
-    public Profile()
-    {
+    // Default constructor required by JPA
+    public Profile() {
     }
-
+    // Convenience constructor for building a fully populated profile in one line
     public Profile(int userId, String firstName, String lastName, String phone, String email, String address, String city, String state, String zip)
     {
         this.userId = userId;

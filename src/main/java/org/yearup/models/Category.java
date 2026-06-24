@@ -1,7 +1,7 @@
 package org.yearup.models;
 
 import jakarta.persistence.*;
-
+// Represents a product category
 @Entity
 @Table(name = "categories")
 public class Category
@@ -16,11 +16,10 @@ public class Category
 
     @Column(name = "description")
     private String description;
-
-    public Category()
-    {
+    // Default constructor required by JPA
+    public Category() {
     }
-
+    // Convenience constructor for creating a category with all fields at once
     public Category(int categoryId, String name, String description)
     {
         this.categoryId = categoryId;

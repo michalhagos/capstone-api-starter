@@ -26,15 +26,22 @@ public class OrdersController {
         this.orderService = orderService;
         this.userService = userService;
     }
+    // Handles POST /orders — triggers checkout for the currently logged-in user
     @PostMapping("")
     public ResponseEntity<Order> checkout(Principal principal) {
+        // Resolve the principal to a userId before passing it to the service
         int userId = getCurrentUserId(principal);
         Order order = orderService.checkout(userId);
+        // The service returns null if the cart is empty or the profile is missing
         if (order == null) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Cart is empty or profile is missing.");
         }
+        // Return the saved order with 201 Created
         return ResponseEntity.status(HttpStatus.CREATED).body(order);
     }
+
+    // Pulls the userId from the security principal so we don't pass
+    // the username string all the way down into the service layer
     private int getCurrentUserId(Principal principal) {
         if (principal == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Login required.");

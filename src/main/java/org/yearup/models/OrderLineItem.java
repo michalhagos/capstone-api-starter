@@ -1,7 +1,7 @@
 package org.yearup.models;
 
 import jakarta.persistence.*;
-
+// Represents one product line in an order.
 @Entity
 @Table(name = "order_line_items")
 public class OrderLineItem {
@@ -9,19 +9,19 @@ public class OrderLineItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_line_item_id")
     private int orderLineItemId;
-
+    // The order this line item belongs to
     @Column(name = "order_id")
     private int orderId;
-
+    // The product that was purchased
     @Column(name = "product_id")
     private int productId;
-
+    // Price at the time of purchase, stored here so it doesn't change if the product price is updated later
     @Column(name = "sales_price")
     private double salesPrice;
 
     @Column(name = "quantity")
     private int quantity;
-
+    // Discount applied to this line item at checkout (0 if none)
     @Column(name = "discount")
     private double discount;
 

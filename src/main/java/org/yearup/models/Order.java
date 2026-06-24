@@ -3,7 +3,8 @@ package org.yearup.models;
 import jakarta.persistence.*;
 
 import java.time.LocalDateTime;
-
+// Represents the header record of a placed order.
+// One Order can have many OrderLineItems — one per product purchased.
 @Entity
 @Table(name = "orders")
 public class Order {
@@ -11,10 +12,13 @@ public class Order {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "order_id")
     private int orderId;
+    // The user who placed this order
     @Column(name = "user_id")
     private int userId;
+    // Timestamp of when the order was placed
     @Column(name = "date")
     private LocalDateTime date;
+    // Shipping address pulled from the user's profile at checkout time
     @Column(name = "address")
     private String address;
     @Column(name = "city")
@@ -23,6 +27,7 @@ public class Order {
     private String state;
     @Column(name = "zip")
     private String zip;
+    // Shipping cost applied to this order
     @Column(name = "shipping_amount")
     private double shippingAmount;
 

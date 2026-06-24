@@ -1,7 +1,7 @@
 package org.yearup.models;
 
 import jakarta.persistence.*;
-
+// Represents a product available for purchase in the store.
 @Entity
 @Table(name = "products")
 public class Product
@@ -16,29 +16,28 @@ public class Product
 
     @Column(name = "price")
     private double price;
-
+    // Links this product to its category
     @Column(name = "category_id")
     private int categoryId;
 
     @Column(name = "description")
     private String description;
-
+    // Used for filtering within a category
     @Column(name = "subcategory")
     private String subCategory;
-
+    // How many units are currently available
     @Column(name = "stock")
     private int stock;
-
+    // Featured products can be highlighted on the storefront
     @Column(name = "featured")
     private boolean isFeatured;
 
     @Column(name = "image_url")
     private String imageUrl;
-
-    public Product()
-    {
+    // Default constructor required by JPA
+    public Product() {
     }
-
+    // Convenience constructor for building a fully populated product in one line
     public Product(int productId, String name, double price, int categoryId, String description, String subCategory, int stock, boolean isFeatured, String imageUrl)
     {
         this.productId = productId;

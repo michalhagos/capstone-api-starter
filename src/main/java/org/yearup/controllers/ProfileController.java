@@ -24,7 +24,7 @@ public class ProfileController {
         this.profileService = profileService;
         this.userService = userService;
     }
-
+    // GET /profile returns the logged-in user's profile
     @GetMapping("")
     public Profile getProfile(Principal principal)
     {
@@ -37,7 +37,7 @@ public class ProfileController {
         }
         return profile;
     }
-
+    // PUT /profile updates the logged-in user's profile with the request body
     @PutMapping("")
     public Profile updateProfile(@RequestBody Profile profile, Principal principal) {
         int userId = getCurrentUserId(principal);
@@ -47,7 +47,7 @@ public class ProfileController {
         }
         return updated;
     }
-
+    // Resolves the logged-in username to a userId so the service always works with an id rather than a username string
     private int getCurrentUserId(Principal principal) {
         if (principal == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Login required.");

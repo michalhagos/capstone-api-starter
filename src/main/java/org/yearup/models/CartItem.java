@@ -1,7 +1,8 @@
 package org.yearup.models;
 
 import jakarta.persistence.*;
-
+// Represents one row in the shopping_cart table.
+// Each row tracks which user added which product and how many they want.
 @Entity
 @Table(name = "shopping_cart")
 public class CartItem
@@ -10,13 +11,13 @@ public class CartItem
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "cart_item_id")
     private int cartItemId;
-
+    // The user who owns this cart item
     @Column(name = "user_id")
     private int userId;
-
+    // The product that was added to the cart
     @Column(name = "product_id")
     private int productId;
-
+    // Defaults to 1 when first added — increments on repeated adds
     @Column(name = "quantity")
     private int quantity = 1;
 

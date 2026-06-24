@@ -17,11 +17,10 @@ public class ProductsController
 {
     private final ProductService productService;
 
-    public ProductsController(ProductService productService)
-    {
+    public ProductsController(ProductService productService) {
         this.productService = productService;
     }
-
+    // GET /products — search products with optional filters.
     @GetMapping("")
     @PreAuthorize("permitAll()")
     public List<Product> search(@RequestParam(name="cat", required = false) Integer categoryId,
@@ -31,7 +30,7 @@ public class ProductsController
     {
         return productService.search(categoryId, minPrice, maxPrice, subCategory);
     }
-
+    // GET /products/{id} returns a single product by its id
     @GetMapping("{id}")
     @PreAuthorize("permitAll()")
     public Product getById(@PathVariable int id)
@@ -43,7 +42,7 @@ public class ProductsController
 
         return product;
     }
-
+    // POST /products admin only, inserts a new product and returns it with 201 Created
     @PostMapping()
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Product> addProduct(@RequestBody Product product)
@@ -51,7 +50,7 @@ public class ProductsController
         Product saved = productService.create(product);
         return ResponseEntity.status(HttpStatus.CREATED).body(saved);
     }
-
+    // PUT /products/{id} admin only, updates an existing product.
     @PutMapping("{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public Product updateProduct(@PathVariable int id, @RequestBody Product product)
@@ -61,7 +60,8 @@ public class ProductsController
 
         return productService.update(id, product);
     }
-
+    // DELETE /products/{id} — admin only, removes the product from the database.
+    // Returns 404 if it doesn't exist, 204 No Content on success.
     @DeleteMapping("{id}")
     @PreAuthorize("hasRole('ROLE_ADMIN')")
     public ResponseEntity<Void> deleteProduct(@PathVariable int id)
