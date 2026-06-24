@@ -60,4 +60,20 @@ public class ShoppingCartService
         shoppingCartRepository.save(cartItem);
         return getByUserId(userId);
     }
+    @Transactional
+    public ShoppingCart updateProductQuantity(int userId, int productId, int quantity) {
+        CartItem cartItem = shoppingCartRepository.findByUserIdAndProductId(userId, productId);
+        // The PUT requirement says to update only if the item already exists in the cart.
+        if (cartItem != null) {
+            if (quantity <= 0) {
+                // Quantity 0 or less means the item should not stay in the cart.
+                shoppingCartRepository.delete(cartItem);
+            }
+            else {
+                cartItem.setQuantity(quantity);
+                shoppingCartRepository.save(cartItem);
+            }
+        }
+        return getByUserId(userId);
+    }
 }
