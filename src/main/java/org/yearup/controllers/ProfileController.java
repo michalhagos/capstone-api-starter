@@ -1,10 +1,7 @@
 package org.yearup.controllers;
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.server.ResponseStatusException;
 import org.yearup.models.Profile;
 import org.yearup.models.User;
@@ -40,9 +37,19 @@ public class ProfileController {
         }
         return profile;
     }
+
+    @PutMapping("")
+    public Profile updateProfile(@RequestBody Profile profile, Principal principal) {
+        int userId = getCurrentUserId(principal);
+        Profile updated = profileService.update(userId, profile);
+        if (updated == null) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "Profile not found.");
+        }
+        return updated;
+    }
+
     private int getCurrentUserId(Principal principal) {
-        if (principal == null)
-        {
+        if (principal == null) {
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Login required.");
         }
         String userName = principal.getName();
