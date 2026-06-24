@@ -76,4 +76,9 @@ public class ShoppingCartService
         }
         return getByUserId(userId);
     }
+    @Transactional
+    public ShoppingCart clear(int userId) {
+        shoppingCartRepository.deleteByUserId(userId);
+        return getByUserId(userId);
+    }
 }
