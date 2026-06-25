@@ -39,6 +39,7 @@ public class ProfileController {
     }
     // PUT /profile updates the logged-in user's profile with the request body
     @PutMapping("")
+    @PreAuthorize("isAuthenticated()")
     public Profile updateProfile(@RequestBody Profile profile, Principal principal) {
         int userId = getCurrentUserId(principal);
         Profile updated = profileService.update(userId, profile);
